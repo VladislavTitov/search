@@ -15,6 +15,7 @@ from nltk.stem.snowball import SnowballStemmer
 import re
 import string
 
+# обертка для MyStem
 from pymystem3 import Mystem
 
 conn = psycopg2.connect(database="search_1", user="vlados", password="123456", host="localhost", port="5433")
@@ -44,6 +45,7 @@ for item in cur:
     for w in stemmed:
         words_porter.append((str(uuid.uuid4()), w, item[0]))
     
+    # саму программу я добавил в gitignore из-за большого веса, обертка может сама скачивать MyStem, если не указывать путь к бинарнику
     stemmer_ya = Mystem(mystem_bin='./mystem')
     lemmas = stemmer_ya.lemmatize(' '.join(words))
     lemmas = [l for l in lemmas if len(l.strip()) > 0]
