@@ -73,7 +73,13 @@ def search(query: str):
             if term_id in query_vector:
                 tf_idf = query_vector[term_id]
                 cos += idf*tf_idf
-        article_cos[article_id] = cos
+        def get_vector_len(vector):
+            _sum = 0
+            for term, tf_idf in vector.items():
+                _sum += tf_idf ** 2
+            return math.sqrt(_sum)
+
+        article_cos[article_id] = cos / (get_vector_len(terms) * get_vector_len(query_vector))
     
     article_ids_and_cos = [(k, article_cos[k]) for k in sorted(article_cos, key=article_cos.get, reverse=True)]
 
